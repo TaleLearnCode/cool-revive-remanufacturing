@@ -57,7 +57,7 @@ jobs:
   
       # Generate and show an execution plan
       - name: Terraform Plan
-        run: terraform plan --var-file=gh.tfvars -out=tfplan
+        run: terraform plan --var-file=dev.tfvars -out=tfplan
         working-directory: ./infra
   
       - name: Terraform Apply
