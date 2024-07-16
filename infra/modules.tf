@@ -27,14 +27,9 @@ module "cosmos_account" {
   resource_type = "azure-cosmos-db-for-nosql-account"
 }
 
-module "log_analytics_workspace" {
-  source = "git::https://github.com/TaleLearnCode/azure-resource-types.git"
-  resource_type = "log-analytics-workspace"
-}
-
-module "application_insights" {
-  source = "git::https://github.com/TaleLearnCode/azure-resource-types.git"
-  resource_type = "application-insights"
+module "storage_account" {
+  source        = "git::https://github.com/TaleLearnCode/azure-resource-types.git"
+  resource_type = "storage-account"
 }
 
 module "key_vault" {
@@ -45,4 +40,14 @@ module "key_vault" {
 module "app_config" {
   source = "git::https://github.com/TaleLearnCode/azure-resource-types.git"
   resource_type = "app-configuration-store"
+}
+
+module "log_analytics_workspace" {
+  source = "git::https://github.com/TaleLearnCode/azure-resource-types.git"
+  resource_type = "log-analytics-workspace"
+}
+
+module "application_insights" {
+  source = "git::https://github.com/TaleLearnCode/azure-resource-types.git"
+  resource_type = "application-insights"
 }
