@@ -22,6 +22,8 @@ jobs:
           filters: |
             terraform:
               - 'infra/**'
+            production-schedule-facade:
+              - 'src/ProductionSchedule/**'
 
   terraform:
     name: 'Terraform CI'
@@ -59,3 +61,35 @@ jobs:
       - name: Terraform Plan
         run: terraform plan --var-file=dev.tfvars
         working-directory: ./infra
+
+  production-schedule-facade:
+      name: 'Production Schedule Facade CI'
+      needs: paths-filter
+      runs-on: ubuntu-latest
+      if: needs.paths-filter.outputs.production-schedule-facade == 'true'
+      steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./src/ProductionSchedule
+
+      - name: Build project
+        run: dotnet build ProductionScheduleFacade.sln --configuration Release
+        working-directory: ./src/ProductionSchedule
+        
+      - name: Publish artifacts
+        run: dotnet publish --configuration Release --output ./publish
+        working-directory: ./src/ProductionSchedule
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: csharp-artifacts
+          path: ./publish
