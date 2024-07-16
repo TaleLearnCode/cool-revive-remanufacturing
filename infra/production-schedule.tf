@@ -49,7 +49,7 @@ resource "azurerm_storage_table_entity" "production_schedule_pod123" {
   partition_key    = "pod123_${local.current_date}"
   row_key          = count.index + 1
   entity = {
-    "PpodId"    = "pod123",
+    "PodId"    = "pod123",
     "Date"     = local.current_date,
     "Sequence" = count.index,
     "Model"    = "Model 3",

@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ProductionScheduleFacade.Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7112",
+      "launchBrowser": false
+    }
+  }
+}
