@@ -78,3 +78,26 @@ resource "azurerm_api_management" "global" {
   sku_name            = var.apim_sku_name
   tags                = local.global_tags
 }
+
+# -----------------------------------------------------------------------------
+# Storage Account
+# -----------------------------------------------------------------------------
+
+resource "azurerm_storage_account" "global" {
+  name                     = "${module.storage_account.name.abbreviation}crt${var.resource_name_suffix}${var.azure_environment}${module.azure_regions.region.region_short}"
+  resource_group_name      = azurerm_resource_group.global.name
+  location                 = azurerm_resource_group.global.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  tags                     = local.global_tags
+}
+
+module "global_storage_account_connection_string" {
+  source                 = "./modules/app-config-secret"
+  app_config_label       = var.azure_environment
+  app_config_key         = "Global:StorageAccount:ConnectionString"
+  configuration_store_id = azurerm_app_configuration.remanufacturing.id
+  key_vault_id           = azurerm_key_vault.remanufacturing.id
+  secret_name            = "Global-StorageAccount-ConnectionString"
+  secret_value            = azurerm_storage_account.global.primary_connection_string
+}
